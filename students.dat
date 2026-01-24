@@ -1,0 +1,540 @@
+STUDENT
+NSE/1001/16
+Abel Tesfaye
+Computer Science
+0910000001
+COURSE
+Programming I
+CoSc1011
+3
+3
+A
+COURSE
+Data Structures
+CoSc1012
+3
+3
+B+
+COURSE
+Algorithms
+CoSc1013
+3
+3
+A-
+COURSE
+Operating Systems
+CoSc1014
+3
+3
+B
+COURSE
+Database Systems
+CoSc1015
+3
+3
+A
+COURSE
+Software Engineering
+CoSc1016
+3
+3
+B+
+COURSE
+Computer Networks
+CoSc1017
+3
+3
+A-
+COURSE
+Artificial Intelligence
+CoSc1018
+3
+3
+B+
+ENDSTUDENT
+STUDENT
+NSE/1002/16
+Beza Zenebe
+Computer Science
+0910000002
+COURSE
+Programming II
+CoSc1021
+3
+3
+A-
+COURSE
+Data Structures
+CoSc1022
+3
+3
+B
+COURSE
+Algorithms
+CoSc1023
+3
+3
+B+
+COURSE
+Operating Systems
+CoSc1024
+3
+3
+A
+COURSE
+Database Systems
+CoSc1025
+3
+3
+B+
+COURSE
+Software Engineering
+CoSc1026
+3
+3
+A-
+COURSE
+Computer Networks
+CoSc1027
+3
+3
+B
+COURSE
+Machine Learning
+CoSc1028
+3
+3
+A
+ENDSTUDENT
+STUDENT
+NSE/1003/16
+Daniel Abebe
+Computer Science
+0910000003
+COURSE
+Programming I
+CoSc1031
+3
+3
+B+
+COURSE
+Calculus I
+Math1032
+3
+3
+B
+COURSE
+Data Structures
+CoSc1033
+3
+3
+A-
+COURSE
+Algorithms
+CoSc1034
+3
+3
+B+
+COURSE
+Operating Systems
+CoSc1035
+3
+3
+A
+COURSE
+Database Systems
+CoSc1036
+3
+3
+B
+COURSE
+Software Engineering
+CoSc1037
+3
+3
+B+
+COURSE
+Computer Networks
+CoSc1038
+3
+3
+A-
+ENDSTUDENT
+STUDENT
+NSE/1004/16
+Eleni Tadesse
+Computer Science
+0910000004
+COURSE
+Programming I
+CoSc1041
+3
+3
+A
+COURSE
+Data Structures
+CoSc1042
+3
+3
+B+
+COURSE
+Algorithms
+CoSc1043
+3
+3
+A-
+COURSE
+Operating Systems
+CoSc1044
+3
+3
+B
+COURSE
+Database Systems
+CoSc1045
+3
+3
+B+
+COURSE
+Software Engineering
+CoSc1046
+3
+3
+A
+COURSE
+Computer Networks
+CoSc1047
+3
+3
+B+
+COURSE
+Artificial Intelligence
+CoSc1048
+3
+3
+A-
+ENDSTUDENT
+STUDENT
+NSE/1005/16
+Fikadu Mengesha
+Computer Science
+0910000005
+COURSE
+Programming II
+CoSc1051
+3
+3
+B+
+COURSE
+Data Structures
+CoSc1052
+3
+3
+A-
+COURSE
+Algorithms
+CoSc1053
+3
+3
+B
+COURSE
+Operating Systems
+CoSc1054
+3
+3
+A
+COURSE
+Database Systems
+CoSc1055
+3
+3
+B+
+COURSE
+Software Engineering
+CoSc1056
+3
+3
+A-
+COURSE
+Computer Networks
+CoSc1057
+3
+3
+B
+COURSE
+Machine Learning
+CoSc1058
+3
+3
+A
+ENDSTUDENT
+STUDENT
+NSE/1006/16
+Gashaw Alemu
+Computer Science
+0910000006
+COURSE
+Programming I
+CoSc1061
+3
+3
+A-
+COURSE
+Data Structures
+CoSc1062
+3
+3
+B+
+COURSE
+Algorithms
+CoSc1063
+3
+3
+A
+COURSE
+Operating Systems
+CoSc1064
+3
+3
+B
+COURSE
+Database Systems
+CoSc1065
+3
+3
+A-
+COURSE
+Software Engineering
+CoSc1066
+3
+3
+B+
+COURSE
+Computer Networks
+CoSc1067
+3
+3
+A
+COURSE
+Artificial Intelligence
+CoSc1068
+3
+3
+B+
+ENDSTUDENT
+STUDENT
+NSE/1007/16
+Helen Meles
+Computer Science
+0910000007
+COURSE
+Programming II
+CoSc1071
+3
+3
+B
+COURSE
+Data Structures
+CoSc1072
+3
+3
+A-
+COURSE
+Algorithms
+CoSc1073
+3
+3
+B+
+COURSE
+Operating Systems
+CoSc1074
+3
+3
+A
+COURSE
+Database Systems
+CoSc1075
+3
+3
+B+
+COURSE
+Software Engineering
+CoSc1076
+3
+3
+A-
+COURSE
+Computer Networks
+CoSc1077
+3
+3
+B
+COURSE
+Machine Learning
+CoSc1078
+3
+3
+A
+ENDSTUDENT
+STUDENT
+NSE/1008/16
+Ibrahim Fikadu
+Computer Science
+0910000008
+COURSE
+Programming I
+CoSc1081
+3
+3
+A-
+COURSE
+Data Structures
+CoSc1082
+3
+3
+B+
+COURSE
+Algorithms
+CoSc1083
+3
+3
+A
+COURSE
+Operating Systems
+CoSc1084
+3
+3
+B
+COURSE
+Database Systems
+CoSc1085
+3
+3
+A-
+COURSE
+Software Engineering
+CoSc1086
+3
+3
+B+
+COURSE
+Computer Networks
+CoSc1087
+3
+3
+A
+COURSE
+Artificial Intelligence
+CoSc1088
+3
+3
+B+
+ENDSTUDENT
+STUDENT
+NSE/1009/16
+Jemal Tadesse
+Computer Science
+0910000009
+COURSE
+Programming II
+CoSc1091
+3
+3
+B+
+COURSE
+Data Structures
+CoSc1092
+3
+3
+A-
+COURSE
+Algorithms
+CoSc1093
+3
+3
+B
+COURSE
+Operating Systems
+CoSc1094
+3
+3
+A
+COURSE
+Database Systems
+CoSc1095
+3
+3
+B+
+COURSE
+Software Engineering
+CoSc1096
+3
+3
+A-
+COURSE
+Computer Networks
+CoSc1097
+3
+3
+B
+COURSE
+Machine Learning
+CoSc1098
+3
+3
+A
+ENDSTUDENT
+STUDENT
+NSE/1010/16
+Kebede Birhanu
+Computer Science
+0910000010
+COURSE
+Programming I
+CoSc1101
+3
+3
+A-
+COURSE
+Data Structures
+CoSc1102
+3
+3
+B+
+COURSE
+Algorithms
+CoSc1103
+3
+3
+A
+COURSE
+Operating Systems
+CoSc1104
+3
+3
+B
+COURSE
+Database Systems
+CoSc1105
+3
+3
+A-
+COURSE
+Software Engineering
+CoSc1106
+3
+3
+B+
+COURSE
+Computer Networks
+CoSc1107
+3
+3
+A
+COURSE
+Artificial Intelligence
+CoSc1108
+3
+3
+B+
+ENDSTUDENT
