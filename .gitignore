@@ -1,0 +1,35 @@
+build/
+sms_data/
+*.o
+*.d
+# build output
+build/
+build-cmake/
+cmake-build-*/
+*.o
+*.d
+*.a
+
+# data created when you run or test the app (never commit real student data)
+sms_data/
+*.db
+*.db.tmp
+*.db.corrupt-*
+.sms.lock
+security_audit.log
+backups/
+exports/
+
+# local scratch
+scratch/
+*.out
+session*.txt
+
+# editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+*.dSYM/
+core
