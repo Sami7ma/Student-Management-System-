@@ -1,4 +1,6 @@
-# Student Management System v2.0 (C++17 terminal application)
+<h1 align="center">
+  <img src="docs/img/SMS.png" alt="Student Management System v2.0 (C++17 terminal application)" width="100%">
+</h1>
 
 A complete rewrite of the original single-file `main.cpp` into a layered, tested, production-style
 terminal application: role-based access, hashed credentials, tamper-evident audit log, crash-safe
@@ -9,6 +11,17 @@ backups, and a migration path for the legacy `students.dat`.
   [`docs/TEST_CHECKLIST.md`](docs/TEST_CHECKLIST.md) (manual edge-case checklist).
 * Dependencies: **none** beyond a C++17 compiler and the standard library (SHA-256, HMAC, PBKDF2
   are implemented in `src/core/Crypto.cpp` and verified against published test vectors).
+
+## Screenshots
+
+### Main Dashboard & System Status
+![Main Dashboard](docs/img/SMS%202.png)
+
+### Real-Time Analytics & Grade Distribution
+![Analytics Overview](docs/img/SMS3.png)
+
+### Interactive Analytics & Reports Menu
+![Analytics Menu](docs/img/SMS%204.png)
 
 ## Quick start
 

@@ -95,7 +95,7 @@ void MenuController::firstRunSetup() {
 }
 
 bool MenuController::login() {
-    for (int attempt = 0;; ++attempt) {
+    while (true) {
         ctx_.ui.beginScreen({"Sign in"}, nullptr);
         ctx_.ui.hint("Type /cancel as the username to exit.");
         try {
