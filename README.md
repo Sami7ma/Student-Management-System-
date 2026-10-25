@@ -1,83 +1,127 @@
-# Student Management System
-
 <p align="center">
-  <img src="docs/img/SMS.png" alt="Student Management System v2.0" width="100%" />
+  <img src="docs/img/SMS.png" alt="Student Management System — C++17 terminal interface" width="100%">
 </p>
 
-A local, role-based student management application built in **C++17**. This project is a full rewrite of an earlier single-file program, organized into separate domain models, services, persistence, core utilities, and terminal UI. Its focus is reliable academic-record handling, explicit access rules, input validation, and recoverable file storage.
+<h1 align="center">Student Management System</h1>
 
-**C++17 · No third-party runtime dependencies · Make and CMake · Unit and end-to-end tests**
+<p align="center">
+  A local-first student records application built in C++17, with a role-aware terminal interface,
+  academic analytics, and explicit storage and recovery rules.
+</p>
+
+<p align="center">
+  <strong>C++17</strong> · <strong>Standard library only</strong> · <strong>Make &amp; CMake</strong> ·
+  <strong>Unit &amp; end-to-end tests</strong>
+</p>
+
+This project replaces an earlier single-file `main.cpp` with a layered application. Terminal screens,
+application services, storage, domain models, and core utilities have separate responsibilities. The
+result is easier to test and extend, while keeping the application usable from a terminal without
+third-party runtime dependencies.
 
 ## Screenshots
 
-| Dashboard | Analytics overview |
+| Dashboard and system status | Analytics and grade distribution |
 | --- | --- |
 | ![Dashboard](docs/img/SMS%202.png) | ![Analytics overview](docs/img/SMS3.png) |
 
-![Analytics and reports menu](docs/img/SMS%204.png)
+<p align="center">
+  <img src="docs/img/SMS%204.png" alt="Interactive analytics and reports menu" width="88%">
+</p>
 
-[Open the terminal walkthrough](docs/img/SMS.webm)
+[Watch the terminal walkthrough](docs/img/SMS.webm)
+
+## At a glance
+
+- **Role-based access:** Admin, Faculty, and Student permissions are enforced in the service layer.
+- **Academic workflows:** Student and course records, enrollments, grades, transcripts, and search.
+- **Terminal UI:** Colour, Unicode tables, responsive column widths, breadcrumbs, status information, and pagination.
+- **Integrity and recovery:** Validated records, transactional file updates, backups, and a hash-chained audit log.
+- **Reports:** GPA and course analytics, CSV and Markdown exports, and printable text transcripts.
+- **Legacy migration:** An importer for the previous `students.dat` format.
+
+## Interface and interaction design
+
+The interface is designed for terminal use rather than a graphical desktop. Screens share a consistent layout and input flow, so navigation, validation, and destructive actions behave predictably.
+
+- **Visual hierarchy:** ANSI colour, cyan borders, gold headings, and restrained green, amber, and red status indicators.
+- **Readable tables:** Unicode box drawing, widths adapted to the terminal and content, and UTF-8 display-width handling for non-Latin names.
+- **Navigation context:** Breadcrumbs and a status bar showing the signed-in user, role, audit status, time, and database state.
+- **Safer actions:** Confirmation prompts for destructive operations and typed confirmations such as `DELETE` and `RESTORE` for irreversible actions.
+- **Accessible fallbacks:** `--ascii` for plain borders, `--no-color` to disable ANSI colours, and support for the `NO_COLOR` environment variable.
+- **Consistent forms:** A shared prompt reader, input validation, a `/cancel` option, and explicit handling of end-of-input.
 
 ## Features
 
-### Access and accounts
+### Accounts and access control
 
-- Three roles: **Admin**, **Faculty**, and **Student**.
-- Role checks live in the service layer, not only in menus. Students can access only their own profile and transcript.
-- First-run administrator setup; no default administrator password.
-- Passwords are stored as PBKDF2-HMAC-SHA-256 hashes with per-user salts. Password prompts mask input, and repeated failed logins trigger a temporary lockout.
-- Security events are recorded in a hash-chained audit log. The application can verify the chain and report where a modified log first becomes inconsistent.
+- Roles: **Admin**, **Faculty**, and **Student**.
+- Permissions are checked by `AccessPolicy` in the service layer rather than relying on menu visibility alone.
+- Students can view only their own profile and transcript.
+- First-run setup creates the administrator account; there is no built-in default password.
+- Password prompts are masked. Stored credentials use PBKDF2-HMAC-SHA-256 with a per-user salt and constant-time hash comparison.
+- Five consecutive failed attempts lock a username for five minutes. Unknown usernames follow a comparable password-verification path and receive the same public error as an incorrect password.
+- Security events are appended to `security_audit.log`. Each entry participates in a SHA-256 hash chain, which the application can verify to identify the first inconsistent line.
 
-### Academic records
+### Student, course, and academic records
 
-- Student create, view, edit, deactivate, restore, and permanent-delete workflows.
-- Course catalogue management, including retirement and reactivation.
-- Enrollment, withdrawal, and grade entry, correction, and clearing.
-- Case-insensitive partial search, GPA filtering, sorting, and paginated lists.
-- Input and domain validation are applied at the UI, service, and database-loading boundaries.
+- Student records: create, view, edit, deactivate, restore, and permanently delete.
+- Courses: create, edit, retire, reactivate, and permanently delete.
+- Enrollments: enroll and withdraw students.
+- Grades: record, overwrite, and clear grades.
+- Search by partial name, ID, or department; filter by GPA; sort by name, ID, GPA, enrollment date, or department in either direction.
+- Pagination for lists and confirmation before destructive operations.
+- Validation is applied at the UI, service, and database-loading boundaries so invalid data is not accepted just because it bypasses a form.
 
-### Analytics and exports
+### Analytics and reporting
 
-- Credit-weighted GPA and CGPA, term GPA, and academic standing.
-- Course statistics: mean, median, standard deviation, minimum, maximum, pass/fail rate, and grade distribution.
-- Department summaries, top-student views, and printable transcripts.
-- CSV export with spreadsheet-formula-injection mitigation, Markdown reports, and text transcripts.
+- Credit-weighted GPA and CGPA, including per-term GPA.
+- Academic standing: Dean's List at GPA 3.50 or higher, Good Standing at 2.00 or higher, and Probation below 2.00.
+- Course mean, median, standard deviation, minimum, maximum, pass/fail rate, and grade distribution.
+- Department summaries and top-student reports.
+- Printable transcripts and exports to CSV, Markdown, and plain-text transcript files.
+- CSV output follows RFC 4180 conventions, includes a UTF-8 BOM, and prefixes spreadsheet-formula-leading values to reduce formula-injection risk.
 
-### Storage and recovery
+### Input validation and error handling
 
-- Custom `SMSDB v2` file format with escaped records, a record count, and a SHA-256 integrity checksum.
-- Mutations are applied to a copy and persisted before being committed in memory, so failed validation or writes can be rolled back.
-- Temporary-file writes, `fsync`, and atomic rename are used where supported by the platform.
-- Automatic and on-demand snapshots, retention of the newest 20 backups, snapshot validation before restore, and guided recovery when the database is damaged.
-- A cross-process lock prevents two instances from writing to the same data directory at the same time.
-- RAII is used for terminal state, files, and locks.
+- Validation covers student IDs, names, emails, phone numbers, departments, real calendar dates, age, credits, ECTS, marks, GPA ranges, terms, usernames, and passwords.
+- Numeric input must match the complete value; inputs such as `nan`, `inf`, `12abc`, and out-of-range exponents are rejected.
+- A bounded input reader handles stream errors, end-of-input, control characters, and UTF-8 checks, with a limit on retries for an individual field.
+- Domain errors use explicit exception types, including validation, authentication, database, and not-found errors.
+- Resource cleanup uses RAII for files, locks, and terminal state. The application code does not use manual `new` / `delete` allocation.
 
-### Terminal interface
+### Persistence, backups, and recovery
 
-- ANSI colour, Unicode box tables, breadcrumbs, status information, confirmations for destructive actions, and pagination.
-- Table widths adapt to terminal size and UTF-8 display width.
-- `--ascii`, `--no-color`, and the `NO_COLOR` environment variable provide simpler terminal output.
+- The custom `SMSDB v2` format contains a magic header, escaped records, a record count, and a SHA-256 integrity value.
+- Mutations operate on a copy and are persisted before the in-memory state is committed; failed validation or write operations can be rolled back.
+- Writes use a temporary file, `fsync`, and atomic rename where supported by the platform.
+- Backups are created at startup, before permanent deletion, import, and restore operations, and on demand. The newest 20 snapshots are retained.
+- A snapshot is validated before restore. Restore rejects path traversal, and startup recovery can offer a valid backup if the database is damaged while preserving the damaged file.
+- A cross-process lock helps prevent two application instances from writing to the same data directory at once.
 
 ## Quick start
 
-### Build with Make
+### Requirements
 
-Requirements: a C++17 compiler and GNU Make.
+- A C++17-compatible compiler
+- GNU Make for the Make workflow, or CMake for the alternative workflow
+- No third-party runtime libraries
+
+### Build and run with Make
 
 ```sh
 make
 ./build/sms
 ```
 
-On first launch, create an administrator account and then sign in. There is no built-in default password. By default, application data is stored in `./sms_data`; use `--data-dir DIR` to choose another location.
-
-For a separate local data directory:
+On first launch, create an administrator account and then sign in. By default, application data is
+stored in `./sms_data`. Use `--data-dir DIR` to choose another directory:
 
 ```sh
 ./build/sms --data-dir "$HOME/.local/share/sms"
 ```
 
-To import an older `students.dat` file, sign in as an administrator and open **Administration → Import legacy students.dat**. The repository includes a fixture at `examples/legacy_students.dat` for demonstrating the import path. Ensure the fixture contains only fabricated data before publishing the repository.
+To import an older `students.dat` file, sign in as an administrator and open **Administration → Import legacy students.dat**. A synthetic sample fixture is provided in `examples/legacy_students.dat` for testing and demonstrating the importer.
 
 ### Build with CMake
 
@@ -89,67 +133,81 @@ ctest --test-dir build-cmake --output-on-failure
 
 ### Command-line options
 
-| Option | Purpose |
+| Option | Description |
 | --- | --- |
-| `--data-dir DIR` | Use a specific directory for runtime data. |
-| `--ascii` | Use plain ASCII table borders. |
-| `--no-color` | Disable ANSI colours. Also respects `NO_COLOR`. |
+| `--data-dir DIR` | Store runtime files in the specified directory. |
+| `--ascii` | Use ASCII table borders instead of Unicode box drawing. |
+| `--no-color` | Disable ANSI colour output; also respects `NO_COLOR`. |
 | `--version` | Print version information. |
 | `--help` | Show command-line help. |
 
-Enter `/cancel` at a form prompt to cancel that form.
+Enter `/cancel` at a form prompt to cancel the current form.
 
 ## Build and test
 
 ```sh
-make                  # Release executable: build/sms
-make test             # Unit tests
-make debug            # Rebuild and run tests with AddressSanitizer + UBSan
-bash tests/e2e_smoke.sh # Scripted end-to-end checks against the real binary
+make                   # Release build: build/sms
+make test              # Unit tests
+make debug             # AddressSanitizer + UBSan build and test run
+bash tests/e2e_smoke.sh # End-to-end checks against the built executable
 ```
 
-The current unit suite contains **34 tests and 375 assertions**. The end-to-end script contains **38 checks**.
+| Test / Build Target | Status |
+| --- | --- |
+| Strict-warning Make build (`-Wall -Wextra -Wpedantic -Werror`) | Passed |
+| Unit test suite (`make test`) | 34 tests, 375 assertions — passed |
+| End-to-end smoke test suite (`bash tests/e2e_smoke.sh`) | 38 checks — passed |
+| CMake Release build and CTest | Passed (1 CTest target) |
+| AddressSanitizer + UBSan build (`make debug`) | Supported |
+| Platform coverage | Verified on Linux; POSIX compliant |
 
-**Verification during this README review (Linux, GCC 14.2):** the strict-warning Make release build passed; all 34 unit tests and 375 assertions passed; all 38 end-to-end checks passed; and the CMake Release build plus CTest passed. The sanitizer build was not completed during this review, and Windows/macOS builds have not been verified here.
+Verification was performed on Linux with GCC (`-std=c++17`).
 
 ## Architecture
 
-The dependency direction is:
+The dependency direction is intentionally one-way:
 
 ```text
 UI → Services → Storage → Models → Core
 ```
 
-The UI owns terminal interaction. Services enforce application rules and permissions. Storage handles serialization, file access, transactions, audit logging, and backups. Models represent academic entities and database integrity; core utilities provide shared text, time, cryptography, exceptions, and filesystem operations.
+The UI owns terminal interaction. Services implement workflows and enforce permissions. Storage handles file access, serialization, transactions, backups, and audit logging. Models represent academic entities and database integrity, while core utilities provide shared cryptography, text handling, time, filesystem operations, and exceptions.
 
-| Path | Responsibility |
+| Location | Responsibility |
 | --- | --- |
-| `include/sms/` | Public headers grouped by layer. |
-| `src/core/` | Cryptography, text handling, time, filesystem support, and exceptions. |
-| `src/models/` | Students, courses, enrollments, grading, validation rules, and database aggregate. |
+| `include/sms/` | Public headers organised by application layer. |
+| `src/core/` | Cryptographic primitives, text and UTF-8 handling, time, filesystem support, and exceptions. |
+| `src/models/` | Student, course, enrollment, grading, validation rules, and database aggregate. |
 | `src/services/` | Access policy, authentication, academic workflows, analytics, import/export, and backups. |
 | `src/storage/` | Serialization, repository access, transactions, and audit logging. |
 | `src/ui/` | Terminal rendering, prompts, validation, navigation, and screens. |
 | `tests/test_main.cpp` | Unit tests. |
 | `tests/e2e_smoke.sh` | Scripted end-to-end checks. |
-| `docs/AUDIT_REPORT.md` | Findings from the original single-file implementation and how the rewrite addresses them. |
-| `docs/TEST_CHECKLIST.md` | Manual verification scenarios. |
+| `docs/AUDIT_REPORT.md` | Audit of the original single-file implementation and issues addressed by the rewrite. |
+| `docs/TEST_CHECKLIST.md` | Manual edge-case checklist. |
 
-Runtime data in the selected data directory includes `sms.db`, `security_audit.log`, `backups/`, `exports/`, and `.sms.lock`.
+The runtime data directory contains `sms.db`, `security_audit.log`, `backups/`, `exports/`, and `.sms.lock`.
 
-## Design notes and limitations
+## Design decisions and limitations
 
-This is a local terminal application and a portfolio project, not a security-certified or independently audited student-record platform. A few implementation details are important to understand before using it with real records:
+This is a local terminal application and a software project for learning and demonstration. It has not been independently security-audited or certified for handling real institutional records. The current trade-offs are documented here deliberately.
 
-- **Data at rest is not encrypted.** The database is a custom text format. POSIX file permissions are restricted, but someone who can read the files can read the stored academic information.
-- **The audit log is tamper-evident, not tamper-proof.** Someone able to rewrite the entire log can recompute the hash chain. Stronger assurance would require storing checkpoints elsewhere or shipping the log to controlled, append-only storage.
-- **Review password-hashing cost before real-world deployment.** The current implementation uses PBKDF2-HMAC-SHA-256 with 100,000 iterations. OWASP currently recommends 600,000 iterations when PBKDF2-HMAC-SHA-256 is required; Argon2id is the preferred option for many new systems. Any change should be benchmarked and include a migration strategy for existing hashes. See the [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).
-- **Lockout state is in memory.** Restarting the application clears failed-login counters. The idle timeout is checked when the next menu choice arrives; it cannot interrupt a blocking prompt.
-- **The file store rewrites the full database for each mutation.** This is intentionally simple and suitable for modest data sets, not a high-volume institutional deployment. SQLite or a server database would be a sensible next step if scale or concurrent access requirements grow.
-- **Platform coverage is incomplete.** Windows-specific terminal and file-locking branches exist but need first-run testing; Windows and macOS builds are not claimed as verified.
+- **Password hashing parameters need review before real-world use.** The current implementation uses PBKDF2-HMAC-SHA-256 with 100,000 iterations and a 16-byte per-user salt. OWASP currently lists 600,000 iterations for PBKDF2-HMAC-SHA-256 when PBKDF2 is required, and recommends Argon2id for many new systems. Increasing the work factor should be benchmarked and paired with a migration plan for existing hashes. See the [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).
+- **Data at rest is not encrypted.** POSIX file permissions are restricted, but anyone able to read the database file can read the academic records.
+- **The audit log is tamper-evident, not tamper-proof.** Someone who can rewrite the entire file and recompute the chain can forge a consistent history. Stronger guarantees require an independently stored checkpoint or controlled append-only log storage.
+- **Login lockout state is held in memory.** Restarting the application clears the failed-login counters. The idle timeout is checked when the next menu choice arrives; it cannot interrupt a prompt that is waiting for input.
+- **The file store rewrites the database on each mutation.** Copy-before-write keeps the transaction model straightforward, but the approach is intended for modest data sets. SQLite would be a reasonable next storage backend if record counts or concurrency requirements grow.
+- **Platform-specific code:** Windows terminal input (`_getwch`), virtual-terminal handling, and file locking are implemented, but development and automated testing have primarily targeted Linux environments.
+- **The CSV formula guard alters some values intentionally.** Values beginning with `=`, `+`, `-`, or `@` are prefixed with an apostrophe to reduce spreadsheet formula execution risk; this includes phone numbers beginning with `+`.
 
-The cryptographic primitives in `src/core/Crypto.cpp` are implemented in the project and tested against published known-answer vectors. That is useful for demonstrating the implementation work, but it is not a substitute for an independent cryptographic review or a maintained cryptography library in a security-sensitive deployment.
+### GPA and legacy import policy
+
+GPA is credit-weighted, rounded to two decimal places, and uses the project's original letter-grade scale. Every graded enrollment attempt counts toward the calculation, so a retake is treated as a separate attempt. The pass mark is 40. The sample legacy students' GPAs were checked against the original algorithm.
+
+The legacy importer only has letter grades available, so each imported letter grade is represented by the midpoint of its percentage band. This preserves the letter-grade-based GPA calculation, but the original exact percentage cannot be recovered. Imported terms are labelled `LEGACY`. The original single-file program also had a first-course-dropping bug; if an old `students.dat` file was already loaded and saved by that program, the lost course records cannot be recovered by this importer.
+
+The SHA-256, HMAC, and PBKDF2 implementations in `src/core/Crypto.cpp` are checked against published known-answer test vectors. That is useful test coverage, but it does not replace an independent cryptographic review or a maintained cryptography library for security-sensitive deployments.
 
 ## License
 
-This project is distributed under the MIT License; see [`LICENSE`](LICENSE). Confirm that MIT matches your intentions and that you own or have permission to publish all included source code, documentation, screenshots, and video before publishing the repository.
+This project is licensed under the [MIT License](LICENSE). See the [LICENSE](LICENSE) file for details.
