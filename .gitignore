@@ -32,4 +32,4 @@ session*.txt
 .DS_Store
 Thumbs.db
 *.dSYM/
-core
+/core
