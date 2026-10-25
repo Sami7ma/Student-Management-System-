@@ -1,15 +1,12 @@
 # Phase 1 - Audit Report: original `main.cpp` (434 lines)
 
-**Scope note.** The uploaded archive contained exactly two files: `main.cpp` and `students.dat`.
-It did **not** contain assignment specifications, so "assignment compliance" below is measured
-against (a) what the program's own menu promises and (b) the feature list in your refactoring
-brief. If you have a separate assignment document, check it against the feature table in the README.
+**Scope note.** This document details the architectural and security audit of the legacy single-file implementation (`main.cpp`), documenting the critical data-loss bugs, safety hazards, and design anti-patterns resolved in the v2.0 rewrite.
 
-Every defect marked **[verified]** was reproduced by compiling and running your original program.
+Every defect marked **[verified]** was reproduced by compiling and testing the legacy program.
 
 ---
 
-## 1. Compliance / functional gaps (vs. the brief)
+## 1. Functional gaps and architectural limitations
 
 | Requirement | Original | Status |
 |---|---|---|
